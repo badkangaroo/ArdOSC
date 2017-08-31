@@ -12,7 +12,6 @@
  
  */
 
-
 #ifndef OSCClient_h
 #define OSCClient_h
 
@@ -22,35 +21,20 @@
 
 #define kDummyPortNumber 10000
 
-
-
-class OSCClient{
+class OSCClient
+{
 	
 private:
-        
 	uint8_t _sock;
-	
-
     uint8_t *_sendData;
-    
     OSCEncoder encoder;
-
     int16_t sockOpen(void);
 	void sockClose(void);
-	
 	void flushSendData(void);
-    
-    
 public:
     
 	OSCClient(void);
 	~OSCClient(void);
-    
-
 	int16_t send( OSCMessage *_message);
-    
-			
 };
-
-
 #endif

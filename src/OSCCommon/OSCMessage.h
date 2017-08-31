@@ -11,13 +11,8 @@
  Copyright (c) 2009 - 2011 recotana( http://recotana.com )　All right reserved
  
  */
-
-
-
-
 #ifndef OSCMessage_h
 #define OSCMessage_h
-
 
 #include "OSCcommon.h"
 #include "OSCArg.h"
@@ -35,13 +30,15 @@
 
 
 #ifdef _USE_BLOB_
-struct OSCBlob {
+struct OSCBlob
+{
     uint32_t		len;
     const uint8_t	*data;			// points into raw message
 };
 #endif
 
-class OSCMessage{
+class OSCMessage
+{
 	
 private:
     
@@ -72,7 +69,6 @@ public:
 	OSCMessage(const char *_oscAddr);
     
 	~OSCMessage(void);
-    
 
 	void flush(void);
 	
@@ -86,7 +82,6 @@ public:
 	
 	int16_t setOSCAddress(const char *_addr);
 	char *  getOSCAddress(void);
-
 
     int16_t beginMessage( const char *_addr);
 
@@ -112,15 +107,10 @@ public:
         return (OSCBlob *) _args[_index];
     };
 #endif
-	
 	friend class OSCServer;
 	friend class OSCClient;
 	friend class OSCDecoder;
 	friend class OSCEncoder;
     friend class Pattern;
-
-	
 };
-
-
 #endif

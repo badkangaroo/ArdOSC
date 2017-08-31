@@ -12,8 +12,6 @@
  
  */
 
-
-
 #include <stdlib.h>
 
 #include "OSCCommon/OSCClient.h"
@@ -21,23 +19,26 @@
 #include <utility/socket.h>
 #include <utility/w5100.h>
 
-
-OSCClient::OSCClient(void){
+OSCClient::OSCClient(void)
+{
     _sock = MAX_SOCK_NUM;   
 }
 
-OSCClient::~OSCClient(void){
+OSCClient::~OSCClient(void)
+{
     flushSendData();
 }
 
-
-int16_t OSCClient::sockOpen(void){
+int16_t OSCClient::sockOpen(void)
+{
 
     if ( _sock != MAX_SOCK_NUM ) return -1;
     
-    for ( int i = 0 ; i < MAX_SOCK_NUM ; i++ ) {
+    for ( int i = 0 ; i < MAX_SOCK_NUM ; i++ )
+	{
         uint8_t s = W5100.readSnSR(i);
-        if ( s == SnSR::CLOSED || s == SnSR::FIN_WAIT ) {
+        if ( s == SnSR::CLOSED || s == SnSR::FIN_WAIT )
+		{
             _sock = i;
             break;
         }
@@ -50,19 +51,19 @@ int16_t OSCClient::sockOpen(void){
     return 1;
 }
 
-void OSCClient::sockClose(void){
-    
+void OSCClient::sockClose(void)
+{
     if ( _sock == MAX_SOCK_NUM ) return;
     
     close(_sock);
     
     _sock = MAX_SOCK_NUM;
-
 }
 
 
 
-int16_t OSCClient::send(OSCMessage *_message){
+int16_t OSCClient::send(OSCMessage *_message)
+{
 	
     uint16_t result=0;
     
@@ -70,15 +71,13 @@ int16_t OSCClient::send(OSCMessage *_message){
     
 	_sendData = ( uint8_t*)calloc( _message->getMessageSize()  ,1 );
     
-    
-	if( encoder.encode( _message , _sendData ) < 0 ){
+	if( encoder.encode( _message , _sendData ) < 0 )
+	{
 		flushSendData();
 		return -1;
 	}
     
-    
     if( sockOpen()<0 ) return -1; //socket open check
-
 
     result = sendto( _sock , _sendData , _message->getMessageSize() , _message->getIpAddress(), _message->getPortNumber() );
  
@@ -87,11 +86,10 @@ int16_t OSCClient::send(OSCMessage *_message){
     flushSendData();
 
 	return result;
-    
 }
 
-
-void OSCClient::flushSendData(void){
+void OSCClient::flushSendData(void)
+{
     
 	free(_sendData);
 	_sendData=0;
